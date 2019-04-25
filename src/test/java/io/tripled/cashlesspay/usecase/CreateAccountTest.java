@@ -1,9 +1,11 @@
 package io.tripled.cashlesspay.usecase;
 
-import io.tripled.cashlesspay.model.Account;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.tripled.cashlesspay.model.Account.anAccount;
+import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.aValidCreateAccountRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CreateAccountTest {
@@ -18,10 +20,24 @@ class CreateAccountTest {
     }
 
     @Test
-    void createNewAccount() {
-        useCase.execute();
+    @DisplayName("Should store the new account")
+    void storeTheNewAccount() {
+        useCase.execute(aValidCreateAccountRequest());
 
-        Account createdAccount = accounts.lastCreatedAccount;
-        assertThat(createdAccount).isNotNull();
+        assertThat(accounts.lastCreatedAccount)
+                .isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should store the a name in the account when given.")
+    void storeNameOnTheAccount() {
+        CreateAccountRequest request = aValidCreateAccountRequest();
+
+        useCase.execute(request);
+
+        assertThat(accounts.lastCreatedAccount)
+                .isEqualTo(anAccount()
+                        .withName("Domenique Tilleuil")
+                        .build());
     }
 }

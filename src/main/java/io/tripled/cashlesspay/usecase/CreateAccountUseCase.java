@@ -11,7 +11,9 @@ public class CreateAccountUseCase {
         this.accounts = accounts;
     }
 
-    public void execute() {
-        accounts.add(new Account());
+    public void execute(CreateAccountRequest request) {
+        accounts.add(Account.anAccount()
+                .withName(request.getName())
+                .build());
     }
 }
