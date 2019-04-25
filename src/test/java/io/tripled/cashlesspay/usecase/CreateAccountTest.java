@@ -1,17 +1,24 @@
 package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.Account;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CreateAccountTest {
+class CreateAccountTest {
+
+    private TestAccounts accounts;
+    private CreateAccountUseCase useCase;
+
+    @BeforeEach
+    void setUp() {
+        accounts = new TestAccounts();
+        useCase = new CreateAccountUseCase(accounts);
+    }
 
     @Test
     void createNewAccount() {
-        TestAccounts accounts = new TestAccounts();
-        CreateAccountUseCase useCase = new CreateAccountUseCase(accounts);
-
         useCase.execute();
 
         Account createdAccount = accounts.lastCreatedAccount;

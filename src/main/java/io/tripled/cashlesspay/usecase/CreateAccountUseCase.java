@@ -12,8 +12,6 @@ public class CreateAccountUseCase {
     }
 
     public void execute() {
-
         accounts.add(new Account());
-
     }
 }
