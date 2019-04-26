@@ -64,6 +64,7 @@ class CreateAccountTest {
     }
 
     @Test
+    @DisplayName("Should store the given initial balance on the account.")
     void storeInitialBalance() {
         CreateAccountRequest request = aValidCreateAccountRequest().build();
 
@@ -76,6 +77,7 @@ class CreateAccountTest {
     }
 
     @Test
+    @DisplayName("Should be able to create an account with a balance of ZERO.")
     void storeInitialBalanceWithZero() {
         CreateAccountRequest request = aValidCreateAccountRequest()
                 .withInitialBalance(BigDecimal.ZERO)
