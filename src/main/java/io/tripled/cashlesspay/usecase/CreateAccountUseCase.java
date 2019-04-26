@@ -18,6 +18,7 @@ public class CreateAccountUseCase {
         if ( isValid(request)) {
             Account account = Account.anAccount()
                     .withName(request.getName())
+                    .withInitialBalance(request.getInitialBalance())
                     .build();
             accounts.add(account);
 

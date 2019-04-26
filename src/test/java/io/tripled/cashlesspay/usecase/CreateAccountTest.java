@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static io.tripled.cashlesspay.model.Account.anAccount;
 import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.aValidCreateAccountRequest;
 import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.anInvalidCreateAccountRequest;
@@ -25,7 +27,7 @@ class CreateAccountTest {
     @Test
     @DisplayName("Should store the new account")
     void storeTheNewAccount() {
-        useCase.execute(aValidCreateAccountRequest(), presenter);
+        useCase.execute(aValidCreateAccountRequest().build(), presenter);
 
         assertThat(accounts.lastCreatedAccount)
                 .isNotNull();
@@ -36,7 +38,7 @@ class CreateAccountTest {
     @Test
     @DisplayName("Should store the a name in the account when given.")
     void storeNameOnTheAccount() {
-        CreateAccountRequest request = aValidCreateAccountRequest();
+        CreateAccountRequest request = aValidCreateAccountRequest().build();
 
         useCase.execute(request, presenter);
 
@@ -51,7 +53,7 @@ class CreateAccountTest {
     @Test
     @DisplayName("Should not store the acount when the name is not provided.")
     void notStoreWhenNameNotGiven() {
-        CreateAccountRequest request = anInvalidCreateAccountRequest();
+        CreateAccountRequest request = anInvalidCreateAccountRequest().build();
 
         useCase.execute(request, presenter);
 
@@ -59,5 +61,31 @@ class CreateAccountTest {
                 .isNull();
         assertThat(presenter.nameNotProvidedCalled)
                 .isTrue();
+    }
+
+    @Test
+    void storeInitialBalance() {
+        CreateAccountRequest request = aValidCreateAccountRequest().build();
+
+        useCase.execute(request, presenter);
+
+        assertThat(presenter.id)
+                .isNotEmpty();
+        assertThat(accounts.lastCreatedAccount.balance())
+                .isEqualTo(BigDecimal.TEN);
+    }
+
+    @Test
+    void storeInitialBalanceWithZero() {
+        CreateAccountRequest request = aValidCreateAccountRequest()
+                .withInitialBalance(BigDecimal.ZERO)
+                .build();
+
+        useCase.execute(request, presenter);
+
+        assertThat(presenter.id)
+                .isNotEmpty();
+        assertThat(accounts.lastCreatedAccount.balance())
+                .isEqualTo(BigDecimal.ZERO);
     }
 }
