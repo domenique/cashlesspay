@@ -1,8 +1,10 @@
 package io.tripled.cashlesspay.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Account {
+    private final String id;
     private final String name;
 
     public static AccountBuilder anAccount() {
@@ -10,7 +12,12 @@ public class Account {
     }
 
     private Account(String name) {
+        id = Long.toHexString(UUID.randomUUID().getMostSignificantBits());
         this.name = name;
+    }
+
+    public String id() {
+        return id;
     }
 
     public String name() {
