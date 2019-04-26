@@ -5,6 +5,8 @@ import io.tripled.cashlesspay.model.Accounts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.util.Objects.isNull;
+
 public class CreateAccountUseCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateAccountUseCase.class);
@@ -15,21 +17,22 @@ public class CreateAccountUseCase {
     }
 
     public void execute(CreateAccountRequest request, CreateAccountPresenter presenter) {
-        if ( isValid(request)) {
-            Account account = Account.anAccount()
-                    .withName(request.getName())
-                    .withInitialBalance(request.getInitialBalance())
-                    .build();
-            accounts.add(account);
-
-            LOGGER.info("New Account created with id {} for {}", account.id(), account.name());
-            presenter.accountCreated(account.id());
-        } else {
+        if (!isNameProvided(request)) {
             presenter.nameNotProvided();
+            return;
         }
+
+        Account account = Account.anAccount()
+                .withName(request.getName())
+                .withInitialBalance(request.getInitialBalance())
+                .build();
+        accounts.add(account);
+
+        LOGGER.info("New Account created with id {} for {} with initial balance of {}", account.id(), account.name(), account.balance());
+        presenter.accountCreated(account.id());
     }
 
-    private boolean isValid(CreateAccountRequest request) {
-        return request.getName() != null && !request.getName().isEmpty();
+    private boolean isNameProvided(CreateAccountRequest request) {
+        return !isNull(request.getName()) && !request.getName().isEmpty();
     }
 }

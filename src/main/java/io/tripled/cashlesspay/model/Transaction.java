@@ -19,7 +19,7 @@ public class Transaction {
     }
 
     Transaction add(Transaction transaction) {
-        return new Transaction(this.amount.add(transaction.amount));
+        return new Transaction(amount.add(transaction.amount));
     }
 
     @Override
