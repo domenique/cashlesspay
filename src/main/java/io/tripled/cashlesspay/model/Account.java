@@ -48,6 +48,10 @@ public class Account {
         return Objects.hash(name);
     }
 
+    public void topUp(BigDecimal amount) {
+        transactions.add(new Transaction(amount));
+    }
+
     public static class AccountBuilder {
 
         private String name;
