@@ -90,4 +90,17 @@ class CreateAccountTest {
         assertThat(accounts.lastCreatedAccount.balance())
                 .isEqualTo(BigDecimal.ZERO);
     }
+
+    @Test
+    @DisplayName("Should not store the account id the initial balance is negative.")
+    void notStoreAccountWhenInitialBalanceIsNegative() {
+        CreateAccountRequest request = aValidCreateAccountRequest()
+                .withInitialBalance(BigDecimal.TEN.negate())
+                .build();
+
+        useCase.execute(request, presenter);
+
+        assertThat(presenter.negativeInitialBalanceCalled).isTrue();
+        assertThat(accounts.lastCreatedAccount).isNull();
+    }
 }

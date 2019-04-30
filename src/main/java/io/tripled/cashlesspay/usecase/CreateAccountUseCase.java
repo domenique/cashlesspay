@@ -5,6 +5,8 @@ import io.tripled.cashlesspay.model.Accounts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+
 import static java.util.Objects.isNull;
 
 public class CreateAccountUseCase {
@@ -22,6 +24,11 @@ public class CreateAccountUseCase {
             return;
         }
 
+        if (!isInitialBalancePositive(request)) {
+            presenter.negativeInitialBalanceProvided();
+            return;
+        }
+
         Account account = Account.anAccount()
                 .withName(request.getName())
                 .withInitialBalance(request.getInitialBalance())
@@ -30,6 +37,10 @@ public class CreateAccountUseCase {
 
         LOGGER.info("New Account created with id {} for {} with initial balance of {}", account.id(), account.name(), account.balance());
         presenter.accountCreated(account.id());
+    }
+
+    private boolean isInitialBalancePositive(CreateAccountRequest request) {
+        return request.getInitialBalance() != null && request.getInitialBalance().compareTo(BigDecimal.ZERO) >= 0;
     }
 
     private boolean isNameProvided(CreateAccountRequest request) {
