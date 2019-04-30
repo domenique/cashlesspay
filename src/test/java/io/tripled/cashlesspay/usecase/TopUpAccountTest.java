@@ -3,6 +3,7 @@ package io.tripled.cashlesspay.usecase;
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.TestAccounts;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ class TopUpAccountTest {
     }
 
     @Test
+    @DisplayName("Should top up the account if found.")
     void topsUpTheAccountIfFound() {
         var account = Account.anAccount()
                 .withName("Domenique Tilleuil")
@@ -40,5 +42,19 @@ class TopUpAccountTest {
         assertThat(presenter.successCalled).isTrue();
         assertThat(accounts.findById(account.id()).map(Account::balance))
                 .hasValue(BigDecimal.TEN.add(BigDecimal.valueOf(5L)));
+    }
+
+    @Test
+    @DisplayName("Should not top up the account if not found.")
+    void failsWhenAccountNotFound() {
+        var request = TopUpAccountRequest.aTopUpAccountRequest()
+                .withAccountId("fake-id")
+                .withAmount(BigDecimal.valueOf(5L))
+                .build();
+
+        useCase.execute(request, presenter);
+
+        assertThat(presenter.notFoundCalled).isTrue();
+        assertThat(accounts.accountsById).isEmpty();
     }
 }
