@@ -1,5 +1,6 @@
 package io.tripled.cashlesspay.usecase;
 
+import io.tripled.cashlesspay.model.TestAccounts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
