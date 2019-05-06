@@ -4,4 +4,6 @@ public interface TopUpAccountPresenter {
     void success();
 
     void notFound();
+
+    void negativeAmountNotAllowed();
 }

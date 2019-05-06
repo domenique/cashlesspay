@@ -2,6 +2,7 @@ package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.Accounts;
+import io.tripled.cashlesspay.model.TopUpWithNegativeAmountNotAllowedException;
 
 import java.math.BigDecimal;
 
@@ -20,9 +21,13 @@ public class TopUpAccountUseCase {
     }
 
     private void topUp(Account account, BigDecimal amount, TopUpAccountPresenter presenter) {
-        account.topUp(amount);
-        accounts.save(account);
+        try {
+            account.topUp(amount);
+            accounts.save(account);
+            presenter.success();
+        } catch (TopUpWithNegativeAmountNotAllowedException ex) {
+            presenter.negativeAmountNotAllowed();
+        }
 
-        presenter.success();
     }
 }

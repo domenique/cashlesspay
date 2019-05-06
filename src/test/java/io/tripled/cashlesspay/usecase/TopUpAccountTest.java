@@ -57,4 +57,23 @@ class TopUpAccountTest {
         assertThat(presenter.notFoundCalled).isTrue();
         assertThat(accounts.accountsById).isEmpty();
     }
+
+    @Test
+    @DisplayName("Should fial if the amount is negative")
+    void failsWhenAmountIsNegative() {
+        var account = Account.anAccount()
+                .withName("Domenique Tilleuil")
+                .withInitialBalance(BigDecimal.TEN)
+                .build();
+        accounts.add(account);
+        var request = TopUpAccountRequest.aTopUpAccountRequest()
+                .withAccountId(account.id())
+                .withAmount(BigDecimal.valueOf(-5L))
+                .build();
+
+        useCase.execute(request, presenter);
+
+        assertThat(presenter.negativeAmountNotAllowedCalled).isTrue();
+        assertThat(accounts.findById(account.id()).map(Account::balance)).hasValue(BigDecimal.TEN);
+    }
 }

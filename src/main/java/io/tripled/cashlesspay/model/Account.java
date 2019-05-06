@@ -49,6 +49,9 @@ public class Account {
     }
 
     public void topUp(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new TopUpWithNegativeAmountNotAllowedException("Cannot topUp an account with a negative amount");
+        }
         transactions.add(new Transaction(amount));
     }
 
