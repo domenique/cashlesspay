@@ -1,6 +1,8 @@
 package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.TestAccounts;
+import io.tripled.cashlesspay.model.TestEventPublisher;
+import io.tripled.cashlesspay.model.event.AccountCreatedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,13 +17,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CreateAccountTest {
 
     private TestAccounts accounts;
+    private TestEventPublisher eventPublisher;
     private CreateAccountUseCase useCase;
     private TestCreateAccountPresenter presenter;
 
     @BeforeEach
     void setUp() {
         accounts = new TestAccounts();
-        useCase = new CreateAccountUseCase(accounts);
+        eventPublisher = new TestEventPublisher();
+        useCase = new CreateAccountUseCase(accounts, eventPublisher);
         presenter = new TestCreateAccountPresenter();
     }
 
@@ -34,6 +38,8 @@ class CreateAccountTest {
                 .isNotNull();
         assertThat(presenter.id)
                 .isNotEmpty();
+        assertThat(eventPublisher.findFirst(AccountCreatedEvent.class))
+                .isPresent();
     }
 
     @Test
@@ -49,6 +55,8 @@ class CreateAccountTest {
                         .build());
         assertThat(presenter.id)
                 .isNotEmpty();
+        assertThat(eventPublisher.findFirst(AccountCreatedEvent.class))
+                .isPresent();
     }
 
     @Test
@@ -61,6 +69,8 @@ class CreateAccountTest {
         assertThat(accounts.lastCreatedAccount)
                 .isNull();
         assertThat(presenter.nameNotProvidedCalled)
+                .isTrue();
+        assertThat(eventPublisher.isEmpty())
                 .isTrue();
     }
 
@@ -75,6 +85,8 @@ class CreateAccountTest {
                 .isNotEmpty();
         assertThat(accounts.lastCreatedAccount.balance())
                 .isEqualTo(BigDecimal.TEN);
+        assertThat(eventPublisher.findFirst(AccountCreatedEvent.class))
+                .isPresent();
     }
 
     @Test
@@ -90,6 +102,8 @@ class CreateAccountTest {
                 .isNotEmpty();
         assertThat(accounts.lastCreatedAccount.balance())
                 .isEqualTo(BigDecimal.ZERO);
+        assertThat(eventPublisher.findFirst(AccountCreatedEvent.class))
+                .isPresent();
     }
 
     @Test
@@ -103,5 +117,7 @@ class CreateAccountTest {
 
         assertThat(presenter.negativeInitialBalanceCalled).isTrue();
         assertThat(accounts.lastCreatedAccount).isNull();
+        assertThat(eventPublisher.isEmpty())
+                .isTrue();
     }
 }

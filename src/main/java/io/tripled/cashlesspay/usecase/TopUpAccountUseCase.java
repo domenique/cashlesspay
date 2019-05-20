@@ -2,6 +2,7 @@ package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.Accounts;
+import io.tripled.cashlesspay.model.EventPublisher;
 import io.tripled.cashlesspay.model.TopUpWithNegativeAmountNotAllowedException;
 
 import java.math.BigDecimal;
@@ -9,9 +10,11 @@ import java.math.BigDecimal;
 public class TopUpAccountUseCase {
 
     private final Accounts accounts;
+    private final EventPublisher eventPublisher;
 
-    public TopUpAccountUseCase(Accounts accounts) {
+    public TopUpAccountUseCase(Accounts accounts, EventPublisher eventPublisher) {
         this.accounts = accounts;
+        this.eventPublisher = eventPublisher;
     }
 
     public void execute(TopUpAccountRequest request, TopUpAccountPresenter presenter) {
@@ -24,6 +27,8 @@ public class TopUpAccountUseCase {
         try {
             account.topUp(amount);
             accounts.save(account);
+
+            eventPublisher.publishFor(account);
             presenter.success();
         } catch (TopUpWithNegativeAmountNotAllowedException ex) {
             presenter.negativeAmountNotAllowed();

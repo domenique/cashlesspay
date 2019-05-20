@@ -2,6 +2,8 @@ package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.TestAccounts;
+import io.tripled.cashlesspay.model.TestEventPublisher;
+import io.tripled.cashlesspay.model.event.AccountToppedUpEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TopUpAccountTest {
 
     private TestAccounts accounts;
+    private TestEventPublisher eventPublisher;
     private TopUpAccountUseCase useCase;
     private TestTopUpAccountPresenter presenter;
 
@@ -20,7 +23,8 @@ class TopUpAccountTest {
     @BeforeEach
     void setUp() {
         accounts = new TestAccounts();
-        useCase = new TopUpAccountUseCase(accounts);
+        eventPublisher = new TestEventPublisher();
+        useCase = new TopUpAccountUseCase(accounts, eventPublisher);
         presenter = new TestTopUpAccountPresenter();
     }
 
@@ -42,6 +46,8 @@ class TopUpAccountTest {
         assertThat(presenter.successCalled).isTrue();
         assertThat(accounts.findById(account.id()).map(Account::balance))
                 .hasValue(BigDecimal.TEN.add(BigDecimal.valueOf(5L)));
+        assertThat(eventPublisher.findFirst(AccountToppedUpEvent.class))
+                .isPresent();
     }
 
     @Test
@@ -56,6 +62,7 @@ class TopUpAccountTest {
 
         assertThat(presenter.notFoundCalled).isTrue();
         assertThat(accounts.accountsById).isEmpty();
+        assertThat(eventPublisher.isEmpty()).isTrue();
     }
 
     @Test
@@ -75,5 +82,6 @@ class TopUpAccountTest {
 
         assertThat(presenter.negativeAmountNotAllowedCalled).isTrue();
         assertThat(accounts.findById(account.id()).map(Account::balance)).hasValue(BigDecimal.TEN);
+        assertThat(eventPublisher.isEmpty()).isTrue();
     }
 }
