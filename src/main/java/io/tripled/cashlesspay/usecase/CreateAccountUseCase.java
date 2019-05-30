@@ -2,6 +2,7 @@ package io.tripled.cashlesspay.usecase;
 
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.Accounts;
+import io.tripled.cashlesspay.model.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +14,11 @@ public class CreateAccountUseCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateAccountUseCase.class);
     private final Accounts accounts;
+    private final EventPublisher eventPublisher;
 
-    public CreateAccountUseCase(Accounts accounts) {
+    public CreateAccountUseCase(Accounts accounts, EventPublisher eventPublisher) {
         this.accounts = accounts;
+        this.eventPublisher = eventPublisher;
     }
 
     public void execute(CreateAccountRequest request, CreateAccountPresenter presenter) {
@@ -34,6 +37,7 @@ public class CreateAccountUseCase {
                 .withInitialBalance(request.getInitialBalance())
                 .build();
         accounts.add(account);
+        eventPublisher.publishFor(account);
 
         LOGGER.info("New Account created with id {} for {} with initial balance of {}", account.id(), account.name(), account.balance());
         presenter.accountCreated(account.id());
