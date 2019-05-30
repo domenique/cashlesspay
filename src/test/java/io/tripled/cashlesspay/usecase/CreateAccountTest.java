@@ -14,6 +14,7 @@ import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.aValidCr
 import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.anInvalidCreateAccountRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Create account usecase")
 class CreateAccountTest {
 
     private TestAccounts accounts;

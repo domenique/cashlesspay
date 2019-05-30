@@ -2,6 +2,7 @@ package io.tripled.cashlesspay.model;
 
 import io.tripled.cashlesspay.model.event.AccountCreatedEvent;
 import io.tripled.cashlesspay.model.event.AccountToppedUpEvent;
+import io.tripled.cashlesspay.model.event.TransactionRegisteredEvent;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,6 +49,15 @@ public class Account implements EventProvider {
         }
         transactions.add(new Transaction(amount));
         uncommittedEvents.add(new AccountToppedUpEvent());
+    }
+
+    public void registerTransaction(BigDecimal amount) {
+        if (balance().subtract(amount).compareTo(BigDecimal.ZERO) >= 0) {
+            transactions.add(new Transaction(amount.negate()));
+            uncommittedEvents.add(new TransactionRegisteredEvent());
+        } else {
+            throw new InsufficientBalanceAvailableException();
+        }
     }
 
     @Override

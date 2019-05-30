@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static io.tripled.cashlesspay.usecase.TopUpAccountRequestMother.aTopUpOf5;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Top-up account usecase")
 class TopUpAccountTest {
 
     private TestAccounts accounts;
@@ -36,9 +38,8 @@ class TopUpAccountTest {
                 .withInitialBalance(BigDecimal.TEN)
                 .build();
         accounts.add(account);
-        var request = TopUpAccountRequest.aTopUpAccountRequest()
+        var request = aTopUpOf5()
                 .withAccountId(account.id())
-                .withAmount(BigDecimal.valueOf(5L))
                 .build();
 
         useCase.execute(request, presenter);
@@ -53,9 +54,7 @@ class TopUpAccountTest {
     @Test
     @DisplayName("Should not top up the account if not found.")
     void failsWhenAccountNotFound() {
-        var request = TopUpAccountRequest.aTopUpAccountRequest()
-                .withAccountId("fake-id")
-                .withAmount(BigDecimal.valueOf(5L))
+        var request = aTopUpOf5().withAccountId("fake-id")
                 .build();
 
         useCase.execute(request, presenter);
