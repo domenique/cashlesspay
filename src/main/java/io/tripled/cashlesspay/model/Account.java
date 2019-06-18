@@ -2,7 +2,7 @@ package io.tripled.cashlesspay.model;
 
 import io.tripled.cashlesspay.model.event.AccountCreatedEvent;
 import io.tripled.cashlesspay.model.event.AccountToppedUpEvent;
-import io.tripled.cashlesspay.model.event.TransactionRegisteredEvent;
+import io.tripled.cashlesspay.model.event.OrderCreatedEvent;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ public class Account implements EventProvider {
     private final String id;
     private final String name;
     private final List<Transaction> transactions;
+    private final Orders orders;
     private final List<Object> uncommittedEvents;
 
     public static AccountBuilder anAccount() {
@@ -22,9 +23,10 @@ public class Account implements EventProvider {
     }
 
     private Account(String name, List<Transaction> transactions) {
-        uncommittedEvents = new ArrayList<>();
-        this.transactions = transactions;
         id = Long.toHexString(UUID.randomUUID().getMostSignificantBits());
+        this.transactions = transactions;
+        orders = new Orders();
+        uncommittedEvents = new ArrayList<>();
         this.name = name;
         uncommittedEvents.add(new AccountCreatedEvent());
     }
@@ -43,7 +45,7 @@ public class Account implements EventProvider {
                 .toBigDecimal();
     }
 
-    public void topUp(BigDecimal amount) {
+    public void topUp(BigDecimal amount) throws TopUpWithNegativeAmountNotAllowedException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new TopUpWithNegativeAmountNotAllowedException("Cannot topUp an account with a negative amount");
         }
@@ -51,10 +53,11 @@ public class Account implements EventProvider {
         uncommittedEvents.add(new AccountToppedUpEvent());
     }
 
-    public void registerTransaction(BigDecimal amount) {
-        if (balance().subtract(amount).compareTo(BigDecimal.ZERO) >= 0) {
-            transactions.add(new Transaction(amount.negate()));
-            uncommittedEvents.add(new TransactionRegisteredEvent());
+    public void order(Order order) throws InsufficientBalanceAvailableException {
+        if (balance().subtract(order.totalAmount()).compareTo(BigDecimal.ZERO) >= 0) {
+            orders.add(order);
+            transactions.add(new Transaction(order.totalAmount().negate()));
+            uncommittedEvents.add(new OrderCreatedEvent());
         } else {
             throw new InsufficientBalanceAvailableException();
         }

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MakeOrderRequest {
 
@@ -30,7 +30,11 @@ public class MakeOrderRequest {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private static class OrderItem {
+    Stream<OrderItem> items() {
+        return items.stream();
+    }
+
+    static class OrderItem {
         private String description;
         private int quantity;
         private BigDecimal price;
