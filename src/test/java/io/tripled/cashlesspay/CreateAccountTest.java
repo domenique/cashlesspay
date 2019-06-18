@@ -1,8 +1,11 @@
-package io.tripled.cashlesspay.usecase;
+package io.tripled.cashlesspay;
 
 import io.tripled.cashlesspay.model.TestAccounts;
 import io.tripled.cashlesspay.model.TestEventPublisher;
 import io.tripled.cashlesspay.model.event.AccountCreatedEvent;
+import io.tripled.cashlesspay.usecase.CreateAccountRequest;
+import io.tripled.cashlesspay.usecase.CreateAccountUseCase;
+import io.tripled.cashlesspay.usecase.TestCreateAccountPresenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

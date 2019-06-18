@@ -2,7 +2,7 @@ package io.tripled.cashlesspay.usecase;
 
 import java.math.BigDecimal;
 
-class CreateAccountRequest {
+public class CreateAccountRequest {
     private final String name;
     private final BigDecimal initialBalance;
 
@@ -10,16 +10,16 @@ class CreateAccountRequest {
         return new CreateAccountRequestBuilder();
     }
 
-    CreateAccountRequest(String name, BigDecimal initialBalance) {
+    private CreateAccountRequest(String name, BigDecimal initialBalance) {
         this.name = name;
         this.initialBalance = initialBalance;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public BigDecimal getInitialBalance() {
+    BigDecimal getInitialBalance() {
         return initialBalance;
     }
 

@@ -4,7 +4,7 @@ public class TestMakeOrderPresenter implements MakeOrderPresenter {
 
     public boolean accountNotFoundCalled;
     public boolean insuffucientBalanceCalled;
-    boolean successCalled;
+    public boolean successCalled;
 
 
     @Override

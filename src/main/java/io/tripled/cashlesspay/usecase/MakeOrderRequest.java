@@ -1,10 +1,13 @@
 package io.tripled.cashlesspay.usecase;
 
+import io.tripled.cashlesspay.model.Order;
+import io.tripled.cashlesspay.model.OrderLine;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class MakeOrderRequest {
 
@@ -20,18 +23,14 @@ public class MakeOrderRequest {
         this.items = items;
     }
 
-    public String getAccountId() {
+    String getAccountId() {
         return accountId;
     }
 
-    public BigDecimal getAmount() {
-        return items.stream()
-                .map(OrderItem::totalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    Stream<OrderItem> items() {
-        return items.stream();
+    Order toOrder() {
+        return new Order(items.stream()
+                .map(i -> new OrderLine(i.description(), i.quantity(), i.price()))
+                .collect(Collectors.toList()));
     }
 
     static class OrderItem {
@@ -45,19 +44,19 @@ public class MakeOrderRequest {
             this.price = price;
         }
 
-        public String description() {
+        String description() {
             return description;
         }
 
-        public int quantity() {
+        int quantity() {
             return quantity;
         }
 
-        public BigDecimal price() {
+        BigDecimal price() {
             return price;
         }
 
-        public BigDecimal totalPrice() {
+        BigDecimal totalPrice() {
             return price.multiply(BigDecimal.valueOf(quantity));
         }
 

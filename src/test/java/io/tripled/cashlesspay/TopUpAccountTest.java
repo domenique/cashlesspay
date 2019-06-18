@@ -1,9 +1,12 @@
-package io.tripled.cashlesspay.usecase;
+package io.tripled.cashlesspay;
 
 import io.tripled.cashlesspay.model.Account;
 import io.tripled.cashlesspay.model.TestAccounts;
 import io.tripled.cashlesspay.model.TestEventPublisher;
 import io.tripled.cashlesspay.model.event.AccountToppedUpEvent;
+import io.tripled.cashlesspay.usecase.TestTopUpAccountPresenter;
+import io.tripled.cashlesspay.usecase.TopUpAccountRequest;
+import io.tripled.cashlesspay.usecase.TopUpAccountUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
