@@ -1,7 +1,7 @@
 package io.tripled.cashlesspay.query;
 
-import io.tripled.cashlesspay.model.Order;
-import io.tripled.cashlesspay.model.Orders;
+import io.tripled.cashlesspay.model.order.Order;
+import io.tripled.cashlesspay.model.order.Orders;
 
 import java.util.List;
 import java.util.stream.Collectors;

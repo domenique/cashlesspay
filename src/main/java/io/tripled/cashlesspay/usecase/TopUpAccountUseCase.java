@@ -1,9 +1,9 @@
 package io.tripled.cashlesspay.usecase;
 
-import io.tripled.cashlesspay.model.Account;
-import io.tripled.cashlesspay.model.Accounts;
+import io.tripled.cashlesspay.model.account.Account;
+import io.tripled.cashlesspay.model.account.Accounts;
 import io.tripled.cashlesspay.model.EventPublisher;
-import io.tripled.cashlesspay.model.TopUpWithNegativeAmountNotAllowedException;
+import io.tripled.cashlesspay.model.account.TopUpWithNegativeAmountNotAllowedException;
 
 import java.math.BigDecimal;
 

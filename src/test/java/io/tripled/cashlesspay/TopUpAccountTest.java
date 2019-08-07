@@ -1,9 +1,9 @@
 package io.tripled.cashlesspay;
 
-import io.tripled.cashlesspay.model.Account;
+import io.tripled.cashlesspay.model.account.Account;
 import io.tripled.cashlesspay.model.TestAccounts;
 import io.tripled.cashlesspay.model.TestEventPublisher;
-import io.tripled.cashlesspay.model.event.AccountToppedUpEvent;
+import io.tripled.cashlesspay.model.account.AccountToppedUpEvent;
 import io.tripled.cashlesspay.usecase.TestTopUpAccountPresenter;
 import io.tripled.cashlesspay.usecase.TopUpAccountRequest;
 import io.tripled.cashlesspay.usecase.TopUpAccountUseCase;

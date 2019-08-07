@@ -1,4 +1,4 @@
-package io.tripled.cashlesspay.model;
+package io.tripled.cashlesspay.model.account;
 
 public class TopUpWithNegativeAmountNotAllowedException extends Exception {
     TopUpWithNegativeAmountNotAllowedException(String message) {

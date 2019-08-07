@@ -1,7 +1,7 @@
 package io.tripled.cashlesspay.usecase;
 
-import io.tripled.cashlesspay.model.Account;
-import io.tripled.cashlesspay.model.Accounts;
+import io.tripled.cashlesspay.model.account.Account;
+import io.tripled.cashlesspay.model.account.Accounts;
 import io.tripled.cashlesspay.model.EventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package io.tripled.cashlesspay;
 
 import io.tripled.cashlesspay.model.TestAccounts;
 import io.tripled.cashlesspay.model.TestEventPublisher;
-import io.tripled.cashlesspay.model.event.AccountCreatedEvent;
+import io.tripled.cashlesspay.model.account.AccountCreatedEvent;
 import io.tripled.cashlesspay.usecase.CreateAccountRequest;
 import io.tripled.cashlesspay.usecase.CreateAccountUseCase;
 import io.tripled.cashlesspay.usecase.TestCreateAccountPresenter;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static io.tripled.cashlesspay.model.Account.anAccount;
+import static io.tripled.cashlesspay.model.account.Account.anAccount;
 import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.aValidCreateAccountRequest;
 import static io.tripled.cashlesspay.usecase.CreateAccountRequestMother.anInvalidCreateAccountRequest;
 import static org.assertj.core.api.Assertions.assertThat;

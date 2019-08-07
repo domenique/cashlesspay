@@ -1,6 +1,6 @@
 package io.tripled.cashlesspay;
 
-import io.tripled.cashlesspay.model.Account;
+import io.tripled.cashlesspay.model.account.Account;
 import io.tripled.cashlesspay.model.TestAccounts;
 import io.tripled.cashlesspay.model.TestEventPublisher;
 import io.tripled.cashlesspay.usecase.MakeOrderRequestMother;

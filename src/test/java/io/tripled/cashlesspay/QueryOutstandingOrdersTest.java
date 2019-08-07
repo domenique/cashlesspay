@@ -1,8 +1,8 @@
 package io.tripled.cashlesspay;
 
-import io.tripled.cashlesspay.model.Order;
-import io.tripled.cashlesspay.model.OrderStatus;
-import io.tripled.cashlesspay.model.Orders;
+import io.tripled.cashlesspay.model.order.Order;
+import io.tripled.cashlesspay.model.order.OrderStatus;
+import io.tripled.cashlesspay.model.order.Orders;
 import io.tripled.cashlesspay.query.OutstandingOrderResponse;
 import io.tripled.cashlesspay.query.OutstandingOrdersQuery;
 import io.tripled.cashlesspay.query.TestOutstandingOrdersPresenter;
@@ -46,7 +46,7 @@ class QueryOutstandingOrdersTest {
     expectedResponse.addItem("Beer", 1);
     assertThat(presenter.outstandingOrders).containsOnly(expectedResponse);
   }
-  
+
   @Test
   void returnsNoOutstandingOrdersForDeliveredOrders() {
     orders.add(Order.anOrder()

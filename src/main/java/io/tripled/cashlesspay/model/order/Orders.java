@@ -1,4 +1,4 @@
-package io.tripled.cashlesspay.model;
+package io.tripled.cashlesspay.model.order;
 
 import java.util.ArrayList;
 import java.util.List;
