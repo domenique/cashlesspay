@@ -22,7 +22,7 @@ public class MakeOrderUseCase {
         presenter.success();
       } catch (InsufficientBalanceAvailableException ex) {
         presenter.insuffucientBalance();
-      }d
+      }
     }, presenter::accountNotFound);
   }
 
