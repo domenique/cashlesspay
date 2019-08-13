@@ -8,13 +8,13 @@ import java.util.Objects;
 public class MakeOrderRequest {
 
   private String accountId;
-  private List<OrderItem> items;
+  private List<Item> items;
 
   public static Builder aMakeOrderRequest() {
     return new Builder();
   }
 
-  private MakeOrderRequest(String accountId, List<OrderItem> items) {
+  private MakeOrderRequest(String accountId, List<Item> items) {
     this.accountId = accountId;
     this.items = items;
   }
@@ -26,16 +26,16 @@ public class MakeOrderRequest {
 
   public BigDecimal getAmount() {
     return items.stream()
-        .map(OrderItem::totalPrice)
+        .map(Item::totalPrice)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  static class OrderItem {
+  static class Item {
     private String description;
     private int quantity;
     private BigDecimal price;
 
-    private OrderItem(String description, int quantity, BigDecimal price) {
+    private Item(String description, int quantity, BigDecimal price) {
       this.description = description;
       this.quantity = quantity;
       this.price = price;
@@ -61,10 +61,10 @@ public class MakeOrderRequest {
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
-      OrderItem orderItem = (OrderItem) o;
-      return quantity == orderItem.quantity &&
-          Objects.equals(description, orderItem.description) &&
-          Objects.equals(price, orderItem.price);
+      Item item = (Item) o;
+      return quantity == item.quantity &&
+          Objects.equals(description, item.description) &&
+          Objects.equals(price, item.price);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class MakeOrderRequest {
 
   public static class Builder {
     private String accountId;
-    private List<OrderItem> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public Builder withAccountId(String accountId) {
       this.accountId = accountId;
@@ -84,7 +84,7 @@ public class MakeOrderRequest {
 
 
     public Builder withOrderItem(String description, int quantity, BigDecimal price) {
-      items.add(new OrderItem(description, quantity, price));
+      items.add(new Item(description, quantity, price));
       return this;
     }
 
